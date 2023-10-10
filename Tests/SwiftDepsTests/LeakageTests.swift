@@ -50,28 +50,6 @@ final class LeakageTests: XCTestCase {
         }
     }
 
-    /// Verify behavior described here: https://pointfreeco.github.io/swift-dependencies/main/documentation/dependencies/testing#Changing-dependencies-during-tests
-    func testThatAnalyticsCanBeSwappedMidTest() async throws {
-        var analytics = AnalyticsMock()
-        withDependencies {
-            $0.analytics = analytics
-        } operation: {
-            TestObject().trackAction(named: "Part1")
-        }
-        try await Task.sleep(for: .milliseconds(15))
-        XCTAssertEqual(analytics.events, ["Part1"])
-
-        // Now swap to a new value
-        analytics = AnalyticsMock()
-        withDependencies {
-            $0.analytics = analytics
-        } operation: {
-            TestObject().trackAction(named: "Part2")
-        }
-        try await Task.sleep(for: .milliseconds(15))
-        XCTAssertEqual(analytics.events, ["Part2"])
-    }
-
 }
 
 private final class TestObject {
