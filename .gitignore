@@ -6,5 +6,3 @@ DerivedData/
 .swiftpm/configuration/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
-Tests/SwiftDepsTests/RemindersView_DependenciesSnapshotTests/FailedSnapshotTests/
-Tests/SwiftDepsTests/RemindersView_FactorySnapshotTests/FailedSnapshotTests
