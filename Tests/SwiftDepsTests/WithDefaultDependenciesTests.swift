@@ -47,4 +47,32 @@ class WithDefaultDependenciesTests: SnapshotTestCase {
         XCTAssertEqual(analytics.events, ["testLayoutPart1", "task()", "staticTask()"])
     }
 
+    // MARK: - testStaticConst
+
+    func testStaticConst_WithDefaultDependencies_Part1() async throws {
+        let analytics = Dependencies.analytics as! AnalyticsMock
+        MyNestedStuff.testObject.trackAction(named: "Part1")
+        try await Task.sleep(for: .milliseconds(10))
+        XCTAssertEqual(analytics.events, ["Part1"])
+    }
+
+    /// Unfortunately, WithDefaultDependencies causes new leakage in static constants.
+    /// Part 2 will reuse Part 1's analytics.
+    /// The only way this will work is if TestObject doesn't store the analytics @Dependency, but instead grabs it within the scope of the function. Making that change gets this test passing.
+    func testStaticConst_WithDefaultDependencies_Part2() async throws {
+        let analytics = Dependencies.analytics as! AnalyticsMock
+        MyNestedStuff.testObject.trackAction(named: "Part2")
+        try await Task.sleep(for: .milliseconds(10))
+
+        XCTAssertEqual(analytics.events, [])
+        XCTExpectFailure {
+            // What we wanted the value to be:
+            XCTAssertEqual(analytics.events, ["Part2"])
+        }
+    }
+
+}
+
+enum MyNestedStuff {
+    static let testObject = TestObject()
 }

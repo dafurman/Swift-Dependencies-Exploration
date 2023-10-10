@@ -73,8 +73,8 @@ final class LeakageTests: XCTestCase {
 
 }
 
-private final class TestObject {
-    @Dependency(\.analytics) private var analytics
+final class TestObject {
+    @Dependency(\.analytics) var analytics
 
     func trackAction(named name: String, after delay: Duration = .zero) {
         Task {
