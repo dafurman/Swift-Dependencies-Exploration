@@ -4,6 +4,16 @@ import XCTest
 
 final class LeakageTests: XCTestCase {
 
+    override func invokeTest() {
+        if name.contains("WithDefaultDependencies") {
+            withDefaultDependencies {
+                super.invokeTest()
+            }
+        } else {
+            super.invokeTest()
+        }
+    }
+
     // MARK: - testAsyncDependencyMutationDoesNotLeak
 
     /// This kicks off an async mutation of the analytics dependency.
@@ -48,6 +58,17 @@ final class LeakageTests: XCTestCase {
             // What we wanted the value to be:
             XCTAssertEqual(analytics.events, [])
         }
+    }
+
+    func test_WithDefaultDependencies_OnDefaultDependencyPreventsLeaksPart1() async throws {
+        TestObject().trackAction(named: "One", after: .milliseconds(10))
+    }
+
+    func test_WithDefaultDependencies_OnDefaultDependencyPreventsLeaksPart2() async throws {
+        let analytics = DependencyValues._current.analytics as! AnalyticsMock
+        try await Task.sleep(for: .milliseconds(15))
+
+        XCTAssertEqual(analytics.events, [])
     }
 
 }
