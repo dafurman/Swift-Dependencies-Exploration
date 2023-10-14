@@ -64,11 +64,11 @@ class WithDefaultDependenciesTests: SnapshotTestCase {
         MyNestedStuff.testObject.trackAction(named: "Part2")
         try await Task.sleep(for: .milliseconds(10))
 
-        XCTAssertEqual(analytics.events, [])
-        XCTExpectFailure {
-            // What we wanted the value to be:
-            XCTAssertEqual(analytics.events, ["Part2"])
-        }
+//        XCTAssertEqual(analytics.events, [])
+        XCTAssertEqual(analytics.events, ["Part2"])
+//        XCTExpectFailure {
+//            // What we wanted the value to be:
+//        }
     }
 
 }
