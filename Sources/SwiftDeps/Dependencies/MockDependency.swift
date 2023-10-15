@@ -11,19 +11,20 @@ public struct MockDependency<Value, MockType>: @unchecked Sendable {
 
     /// Creates a dependency property to read the specified key path.
     ///
-    /// Don't call this initializer directly. Instead, declare a property with the `Dependency`
-    /// property wrapper, and provide the key path of the dependency value that the property should
+    /// Don't call this initializer directly. Instead, declare a property with the `MockDependency`
+    /// property wrapper, and provide protocol type, the mock type, and the key path of the dependency value that the property should
     /// reflect:
     ///
     /// ```swift
-    /// final class FeatureModel: ObservableObject {
-    ///   @Dependency(\.date) var date
+    /// class MyTestCase: XCTestCase {
+    ///   @MockDependency<AnalyticsProtocol, AnalyticsMock>(\.analytics) var analytics
     ///
     ///   // ...
     /// }
     /// ```
     ///
     /// - Parameter keyPath: A key path to a specific resulting value.
+    /// - Parameter mockType: The type of the mock that should be returned. This must match the type used to instantiate the dependency's `testValue`.
     public init(
         _ keyPath: KeyPath<DependencyValues, Value>,
         _ mockType: MockType.Type,
@@ -37,7 +38,7 @@ public struct MockDependency<Value, MockType>: @unchecked Sendable {
         self.line = line
     }
 
-    /// The current value of the dependency property.
+    /// The current value of the dependency property, cast to the `MockType`.
     public var wrappedValue: MockType {
         @Dependency(keyPath, file: file, fileID: fileID, line: line) var dependency
 
