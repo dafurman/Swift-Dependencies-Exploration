@@ -5,13 +5,10 @@ import XCTest
 
 class InvokeTestConvenienceTests: XCTestCase {
 
-    // Can I set this up automatically for all dependencies available to a base class? Loop through them?
-    // I've proven we can mutate this without issue, so if we can do this, it'd mean there's no need for withDependencies()!
-    var analytics: AnalyticsMock!
+    @MockDependency<AnalyticsProtocol, AnalyticsMock>(\.analytics) var analytics
 
     override func invokeTest() {
         if name.contains("ConvenientInvokeTest") {
-            analytics = DependencyValues._current.analytics as? AnalyticsMock
             withDependencies {
                 $0.analytics = analytics
             } operation: {
@@ -26,7 +23,6 @@ class InvokeTestConvenienceTests: XCTestCase {
     // These leak asynchronously ❌
 
     func testDefault1() async throws {
-        analytics = DependencyValues._current.analytics as? AnalyticsMock
         try await Task.sleep(for: .milliseconds(15))
         let manualEvent = "manual insert \(#function)" // In order to verify this isn't kept around from test to test.
         analytics.events.append(manualEvent)
@@ -35,7 +31,6 @@ class InvokeTestConvenienceTests: XCTestCase {
     }
 
     func testDefault2() async throws {
-        analytics = DependencyValues._current.analytics as? AnalyticsMock
         try await Task.sleep(for: .milliseconds(15))
         let manualEvent = "manual insert \(#function)" // In order to verify this isn't kept around from test to test.
         analytics.events.append(manualEvent)
@@ -44,7 +39,6 @@ class InvokeTestConvenienceTests: XCTestCase {
     }
 
     func testDefault3() async throws {
-        analytics = DependencyValues._current.analytics as? AnalyticsMock
         try await Task.sleep(for: .milliseconds(15))
         let manualEvent = "manual insert \(#function)" // In order to verify this isn't kept around from test to test.
         analytics.events.append(manualEvent)
@@ -53,7 +47,6 @@ class InvokeTestConvenienceTests: XCTestCase {
     }
 
     func testDefault4() async throws {
-        analytics = DependencyValues._current.analytics as? AnalyticsMock
         try await Task.sleep(for: .milliseconds(15))
         let manualEvent = "manual insert \(#function)" // In order to verify this isn't kept around from test to test.
         analytics.events.append(manualEvent)
@@ -62,7 +55,6 @@ class InvokeTestConvenienceTests: XCTestCase {
     }
 
     func testDefault5() async throws {
-        analytics = DependencyValues._current.analytics as? AnalyticsMock
         try await Task.sleep(for: .milliseconds(15))
         let manualEvent = "manual insert \(#function)" // In order to verify this isn't kept around from test to test.
         analytics.events.append(manualEvent)
