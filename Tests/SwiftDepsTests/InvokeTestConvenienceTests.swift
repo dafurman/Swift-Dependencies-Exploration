@@ -5,7 +5,7 @@ import XCTest
 
 class InvokeTestConvenienceTests: XCTestCase {
 
-    @MockDependency<AnalyticsProtocol, AnalyticsMock>(\.analytics) var analytics
+    @MockDependency(\.analytics, AnalyticsMock.self) var analytics
 
     override func invokeTest() {
         if name.contains("ConvenientInvokeTest") {

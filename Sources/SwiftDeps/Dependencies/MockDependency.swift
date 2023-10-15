@@ -17,7 +17,7 @@ public struct MockDependency<Value, MockType>: @unchecked Sendable {
     ///
     /// ```swift
     /// class MyTestCase: XCTestCase {
-    ///   @MockDependency<AnalyticsProtocol, AnalyticsMock>(\.analytics) var analytics
+    ///   @MockDependency(\.analytics, AnalyticsMock.self) var analytics
     ///
     ///   // ...
     /// }
